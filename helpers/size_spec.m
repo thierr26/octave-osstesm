@@ -5,7 +5,7 @@
 ## @deftypefn  {Constructor} {@var{Obj} =} size_spec (@var{SizeDescrVect})
 ## @deftypefnx {Constructor} {@var{Obj} =} size_spec (@var{SizeDescr1}, @var{@
 ## SizeDescr2}, ...)
-## Create a size specification object.
+## Create a size specification object.
 ##
 ## Shape specification objects are meant to be used for variable size checking.
 ##
@@ -36,15 +36,15 @@
 ## @end deftypefn
 ##
 ## @deftypefn {Static method} {@var{Ret} =} size_spec.any_size ()
-## Return a wild card size descriptor representing any size (0 included).
+## Return a wild card size descriptor representing any size (0 included).
 ## @end deftypefn
 ##
 ## @deftypefn {Static method} {@var{Ret} =} size_spec.positive_size ()
-## Return a wild card size descriptor representing any non-zero size.
+## Return a wild card size descriptor representing any non-zero size.
 ## @end deftypefn
 ##
 ## @deftypefn {Static method} {@var{Ret} =} size_spec.zero_one_size ()
-## Return a wild card size descriptor representing size 0 or 1.
+## Return a wild card size descriptor representing size 0 or 1.
 ## @end deftypefn
 ##
 ## @deftypefn  {Static method} {@var{Ret} =} size_spec.match (@var{X}, @var{@

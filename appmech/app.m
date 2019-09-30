@@ -3,7 +3,7 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Protected property} {} app.state
-## Internal state.
+## Internal state.
 ##
 ## @command{app} is an @strong{abstract} value class, meant to be used as
 ## ancestor for application classes.
@@ -15,7 +15,7 @@
 ## @end deftypefn
 ##
 ## @deftypefn {Protected property} {} app.config
-## Configuration.
+## Configuration.
 ##
 ## @command{app} is an @strong{abstract} value class, meant to be used as
 ## ancestor for application classes.

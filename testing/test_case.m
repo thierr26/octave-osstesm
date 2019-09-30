@@ -8,7 +8,7 @@
 ## Err}] = } test_case.run (@var{TestCaseClassName})
 ## @deftypefnx {Static method} {[@var{Ret}, @var{@
 ## Err}, @var{TestCaseObj}] = } test_case.run (@var{TestCaseClassName})
-## Create and run an instance of a test case class.
+## Create and run an instance of a test case class.
 ##
 ## @code{@var{Ret} = test_case.run (@var{TestCaseClassName})} internally
 ## creates an instance of test case class @var{TestCaseClassName}, runs it
@@ -72,7 +72,7 @@
 ## @deftypefnx {Method} {[@var{Ret}, @var{Err}] = } test_case.outcome ()
 ## @deftypefnx {Method} {[@var{Ret}, @var{@
 ## Err}, @var{TestCaseObj}] = } test_case.outcome ()
-## Run test case.
+## Run test case.
 ##
 ## Please see @command{test_case.run} for details about the output arguments.
 ##
