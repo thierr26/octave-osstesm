@@ -22,29 +22,37 @@
 ## Specifies an exact size.
 ##
 ## @item @qcode{size_spec.any_size}
-## Wild card that matches any size (0 included).
+## Wildcard that matches any size (0 included).
 ##
 ## @item @qcode{size_spec.positive_size}
-## Wild card that matches any non-zero size.
+## Wildcard that matches any non-zero size.
 ##
 ## @item @qcode{size_spec.zero_one_size}
-## Wild card that matches size 0 or 1.
+## Wildcard that matches size 0 or 1.
 ## @end table
 ##
 ## @code{@var{Obj} = size_spec (@var{SizeDescr1}, @var{SizeDescr2}, ...)} takes
 ## the size descriptors as separate arguments.
+##
+## Providing no argument is equivalent to providing one @code{[0 0]} argument.
+##
+## Providing a single scalar argument @var{SizeDescr1} is equivalent to
+## providing one @code{[@var{SizeDescr1} 1]} argument.
+##
+## @seealso{size_spec.any_size, size_spec.positive_size,
+## size_spec.zero_one_size}
 ## @end deftypefn
 ##
 ## @deftypefn {Static method} {@var{Ret} =} size_spec.any_size ()
-## Return a wild card size descriptor representing any size (0 included).
+## Return a wildcard size descriptor representing any size (0 included).
 ## @end deftypefn
 ##
 ## @deftypefn {Static method} {@var{Ret} =} size_spec.positive_size ()
-## Return a wild card size descriptor representing any non-zero size.
+## Return a wildcard size descriptor representing any non-zero size.
 ## @end deftypefn
 ##
 ## @deftypefn {Static method} {@var{Ret} =} size_spec.zero_one_size ()
-## Return a wild card size descriptor representing size 0 or 1.
+## Return a wildcard size descriptor representing size 0 or 1.
 ## @end deftypefn
 ##
 ## @deftypefn  {Static method} {@var{Ret} =} size_spec.match (@var{X}, @var{@
@@ -93,7 +101,7 @@
 ## value true and if @code{diff (size_spec.dims (@var{X})) == 0}, then the
 ## function returns a logical array (same size as
 ## @code{size_spec.get_spec ()}). The returned array has true values at indices
-## where the size specication matches, false values elsewhere.
+## where the size specification matches, false values elsewhere.
 ##
 ## Please see @command{size_spec} for details about the size specifications.
 ##
@@ -165,16 +173,24 @@ classdef size_spec
 
                 Obj.size_descr = cell2mat(varargin);
 
-                minVal = evalin('caller', [mfilename '.positive_size']);
-                assert(all(Obj.size_descr >= minVal), ...
-                       'No input value should be lower than %d', ...
-                       minVal);
+            elseif nargin == 1
 
-                if iscolumn(Obj.size_descr)
-                    Obj.size_descr = Obj.size_descr';
-                endif;
+                if numel(varargin{1}) == 1
+                    Obj.size_descr = [varargin{1} 1];
+                elseif numel(varargin{1}) > 1
+                    Obj.size_descr = varargin{1};
+                endif
 
             endif
+
+            minVal = evalin('caller', [mfilename '.positive_size']);
+            assert(all(Obj.size_descr >= minVal), ...
+                   'No input value should be lower than %d', ...
+                   minVal);
+
+            if iscolumn(Obj.size_descr)
+                Obj.size_descr = Obj.size_descr';
+            endif;
 
         endfunction
 
