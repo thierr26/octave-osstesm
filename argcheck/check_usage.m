@@ -14,7 +14,7 @@
 ##
 ## If the function is run by Octave, the error is issued by @code{print_usage}
 ## when possible, otherwise it is issued by rethrowing the
-## @var{ValidationFuncHandle} error (if any) or by explicitely calling
+## @var{ValidationFuncHandle} error (if any) or by explicitly calling
 ## @code{error}.
 ##
 ## In all case, the caller function name (obtained using @command{dbcaller}) is
@@ -62,19 +62,11 @@ function check_usage(varargin)
 
         callerName = dbcaller('name');
 
-        pUFailed = false;
-
         if is_octave
 
-            try
-                print_usage(callerName);
-            catch
-                pUFailed = true;
-            end_try_catch
+            print_usage(callerName);
 
-        endif
-
-        if ~is_octave || pUFailed
+        else
 
             callerFile = dbcaller('file');
             errM = sprintf('Invalid call to ''%s''\n(file %s)', ...
