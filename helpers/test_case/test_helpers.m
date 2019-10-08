@@ -2,11 +2,7 @@
 ## MIT license. Please refer to the LICENSE file.
 
 ## -*- texinfo -*-
-## @deftypefn {Constructor} {@var{Obj} =} test_helpers ()
-## Create a @qcode{helpers} test case object.
-## @end deftypefn
-##
-## @deftypefn {Method} {@var{Ret} = } test_helper.routine ()
+## @deftypefn {Method} {@var{Ret} =} test_helpers.routine ()
 ## Return the cell vector of handles to the @qcode{helpers} test routines.
 ##
 ## Please see @command{test_case.run} for details about test routines.
@@ -41,7 +37,7 @@ function is_octave_too_many_args
 
 endfunction
 
-# -----------------------------------------------------------------------------
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function Ret = is_octave_ok
 

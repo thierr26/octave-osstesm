@@ -2,12 +2,12 @@
 ## MIT license. Please refer to the LICENSE file.
 
 ## -*- texinfo -*-
-## @deftypefn  {Static method} {@var{Ret} = } test_case.run (@var{@
+## @deftypefn  {Static method} {@var{Ret} =} test_case.run (@var{@
 ## TestCaseClassName})
 ## @deftypefnx {Static method} {[@var{Ret}, @var{@
-## Err}] = } test_case.run (@var{TestCaseClassName})
+## Err}] =} test_case.run (@var{TestCaseClassName})
 ## @deftypefnx {Static method} {[@var{Ret}, @var{@
-## Err}, @var{TestCaseObj}] = } test_case.run (@var{TestCaseClassName})
+## Err}, @var{TestCaseObj}] =} test_case.run (@var{TestCaseClassName})
 ## Create and run an instance of a test case class.
 ##
 ## @code{@var{Ret} = test_case.run (@var{TestCaseClassName})} internally
@@ -39,7 +39,7 @@
 ## @seealso{lasterror, test_case.outcome}
 ## @end deftypefn
 ##
-## @deftypefn {Static method} {@var{Ret} = } test_case.is_test_routine (@var{@
+## @deftypefn {Static method} {@var{Ret} =} test_case.is_test_routine (@var{@
 ## X})
 ## Return true for a valid test routine handle.
 ##
@@ -52,7 +52,7 @@
 ## @end deftypefn
 ##
 ## @deftypefn {Static method} {@var{@
-## Ret} = } test_case.is_expected_to_fail (@var{R})
+## Ret} =} test_case.is_expected_to_fail (@var{R})
 ## Return true for a handle to a test routine supposed to issue an error.
 ##
 ## Please see @command{test_case.run} for details about test routines.
@@ -60,7 +60,7 @@
 ## @seealso{test_case.run}
 ## @end deftypefn
 ##
-## @deftypefn {Method} {@var{Ret} = } test_case.routine ()
+## @deftypefn {Method} {@var{Ret} =} test_case.routine ()
 ## Return a cell vector of handles to test routines.
 ##
 ## Please see @command{test_case.run} for details about test routines.
@@ -68,10 +68,10 @@
 ## @seealso{test_case.run}
 ## @end deftypefn
 ##
-## @deftypefn  {Method} {@var{Ret} = } test_case.outcome ()
-## @deftypefnx {Method} {[@var{Ret}, @var{Err}] = } test_case.outcome ()
+## @deftypefn  {Method} {@var{Ret} =} test_case.outcome ()
+## @deftypefnx {Method} {[@var{Ret}, @var{Err}] =} test_case.outcome ()
 ## @deftypefnx {Method} {[@var{Ret}, @var{@
-## Err}, @var{TestCaseObj}] = } test_case.outcome ()
+## Err}, @var{TestCaseObj}] =} test_case.outcome ()
 ## Run test case.
 ##
 ## Please see @command{test_case.run} for details about the output arguments.
@@ -158,7 +158,7 @@ classdef (Abstract) test_case
 
             obj = evalin('caller', Name);
             msg = test_case.derived_class_error_message(Name);
-            assert(isa(obj, mfilename), msg);
+            assert(isa_scalar(obj, mfilename), msg);
 
             if nargout > 1
                 [Outc, varargout{1}] = obj.outcome;
