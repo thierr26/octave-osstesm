@@ -3,14 +3,13 @@
 
 ## -*- texinfo -*-
 ## @deftypefn {Function} {} check_usage (@var{ValidationFuncHandle}, @var{@
-## Arg_1}, @var{Arg_2}, ...)
+## Arg1}, @var{Arg2}, ...)
 ## @deftypefnx {Function} {} check_usage (@var{ValidationFuncReturn})
 ## Submit arguments to a validation function or just check a logical value.
 ##
-## @code{check_usage (@var{ValidationFuncHandle}, @var{Arg_1}, @var{@
-## Arg_2}, ...)} issues an error if @code{logical(@var{@
-## ValidationFuncHandle} (@var{Arg_1}, @var{Arg_2}, ...))} is false or issues
-## an error.
+## @code{check_usage (@var{ValidationFuncHandle}, @var{Arg1}, @var{Arg2}, ...)}
+## issues an error if @code{logical (@var{ValidationFuncHandle} (@var{@
+## Arg1}, @var{Arg2}, ...))} is false or issues an error.
 ##
 ## If the function is run by Octave, the error is issued by @code{print_usage}
 ## when possible, otherwise it is issued by rethrowing the

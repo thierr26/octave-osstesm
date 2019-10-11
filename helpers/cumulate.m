@@ -10,9 +10,9 @@
 ## @code{@var{Ret} = cumulate (@var{X}, @var{FuncHandle})} initializes
 ## @var{Ret} to @var{X} and runs
 ## @code{@var{Ret} = @var{FuncHandle} (@var{Ret})} at least once and until
-## @var{Ret} is scalar (i.e.@ @code{isequal (size(@var{Ret}), [1 1])}). The
-## number of iterations is limited to @code{numel (size(@var{X}))}. An error is
-## issued if @var{Ret} is not scalar after the iterations.
+## @var{Ret} is scalar (i.e.@ @code{isequal (size (@var{Ret}), [1 1])}). The
+## number of iterations is limited to @code{numel (size (@var{X}))}. An error
+## is issued if @var{Ret} is not scalar after the iterations.
 ##
 ## @var{FuncHandle} is supposed to be a handle to a function like
 ## @command{all}, @command{any} or @command{sum}.
