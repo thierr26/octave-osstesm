@@ -159,14 +159,14 @@ endclassdef
 
 # -----------------------------------------------------------------------------
 
-function [IsCorrect, Duration] = add(Operand_1, Operand_2)
+function [IsCorrect, Duration] = add(Operand1, Operand2)
 
     done = false;
     ticID = tic;
     while ~done
 
         answer = input(...
-            sprintf('%d + %d = ? ', Operand_1, Operand_2), 's');
+            sprintf('%d + %d = ? ', Operand1, Operand2), 's');
 
         done = ~isempty(regexp(answer, '^\s*-?[0-9]+\s*$', 'once'));
         if ~done
@@ -176,7 +176,7 @@ function [IsCorrect, Duration] = add(Operand_1, Operand_2)
     endwhile
     Duration = toc(ticID);
 
-    IsCorrect = str2double(answer) == Operand_1 + Operand_2;
+    IsCorrect = str2double(answer) == Operand1 + Operand2;
     if IsCorrect
         fprintf('Correct!\n\n');
     else
