@@ -27,7 +27,7 @@ function Ret = dbcaller(varargin)
     stack = dbstack(2, '-completenames');
 
     if nargin == 1
-        Ret = getfield(stack(1), varargin{1});
+        Ret = stack(1).(varargin{1});
     else
         Ret = stack;
     endif
