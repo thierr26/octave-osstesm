@@ -36,18 +36,23 @@ function check_usage(varargin)
 
     if isa(varargin{1}, 'function_handle')
 
+        r = false;
+
         try
-            logicalConvErr = false;
             r = varargin{1}(varargin{2 : end});
-            logicalConvErr = true;
-            r = logical(r);
-            logicalConvErr = false;
         catch err
-            assert(~logicalConvErr, ...
-                   ['Wrong return type for validation function (return ' ...
-                    'type should be convertible to logical type)']);
             # Do nothing with err here. Non-emptiness of err is tested later.
+            1;
         end_try_catch
+
+        if isempty(err)
+            try
+                r = logical(r);
+            catch
+                error(['Wrong return type for validation function (return ' ...
+                       'type should be convertible to logical type)']);
+            end_try_catch
+        endif
 
     else
 
@@ -61,11 +66,23 @@ function check_usage(varargin)
 
         callerName = dbcaller('name');
 
+        printUsageFailed = false;
+
         if is_octave
 
-            print_usage(callerName);
+            try
+                print_usage(callerName);
+            catch printUsageErr
+                if isempty(printUsageErr.identifier)
+                    printUsageFailed = true;
+                else
+                    rethrow(printUsageErr);
+                endif
+            end_try_catch
 
-        else
+        endif
+
+        if ~is_octave || printUsageFailed
 
             callerFile = dbcaller('file');
             errM = sprintf('Invalid call to ''%s''\n(file %s)', ...
@@ -73,7 +90,7 @@ function check_usage(varargin)
                            callerFile);
 
             if isempty(err)
-                error(errM);
+                error('%s', errM);
             else
                 err.message = sprintf('%s\n%s', errM, err.message);
                 rethrow(err);
