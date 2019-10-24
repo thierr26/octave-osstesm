@@ -135,6 +135,27 @@ classdef (Abstract) test_case
 
         endfunction
 
+        function Ret = routine_type_error_message(RArr, K, TestCaseObj)
+
+            Ret = sprintf(['Wrong return value type for routine #%d ' ...
+                           '(''%s'') of test case ''%s'' (return ' ...
+                           'type should be convertible to logical type)'], ...
+                          K, ...
+                          func2str(RArr{K}), ...
+                          class(TestCaseObj));
+
+        endfunction
+
+        function Ret = routine_succ_error_message(RArr, K, TestCaseObj)
+
+            Ret = sprintf(['No error issued by routine #%d (''%s'') of ' ...
+                           'test case ''%s'''], ...
+                          K, ...
+                          func2str(RArr{K}), ...
+                          class(TestCaseObj));
+
+        endfunction
+
         function Ret = func_handle_error_message(K, TestCaseObj)
 
             Ret = sprintf(['Component #%d of the output of the ' ...
@@ -157,8 +178,8 @@ classdef (Abstract) test_case
             check_usage(nargin == 1 && isvarname(Name));
 
             obj = evalin('caller', Name);
-            msg = test_case.derived_class_error_message(Name);
-            assert(isa_scalar(obj, mfilename), msg);
+            assert(isa_scalar(obj, mfilename), ...
+                   test_case.derived_class_error_message(Name));
 
             if nargout > 1
                 [Outc, varargout{1}] = obj.outcome;
@@ -189,8 +210,8 @@ classdef (Abstract) test_case
 
             check_usage(nargin == 1);
 
-            msg = test_case.func_handle_arg_error_message;
-            assert(test_case.is_test_routine(R), msg);
+            assert(test_case.is_test_routine(R), ...
+                   test_case.func_handle_arg_error_message);
 
             Ret = nargout(R) == 0;
 
@@ -202,7 +223,7 @@ classdef (Abstract) test_case
 
     methods
 
-        function Ret = routine(Obj)
+        function Ret = routine(Obj) %#ok 'Obj' unused.
 
             Ret = {};
 
@@ -213,8 +234,8 @@ classdef (Abstract) test_case
             check_usage(nargin == 1);
 
             rA = Obj.routine;
-            msg = test_case.routine_array_error_message(Obj);
-            assert(iscell(rA) && isvector(rA), msg);
+            assert(iscell(rA) && isvector(rA), ...
+                   test_case.routine_array_error_message(Obj));
 
             n = numel(rA);
             iETF = false(1, n);
@@ -249,9 +270,15 @@ classdef (Abstract) test_case
 
                     if nargout > 1
                         try
-                            assert(~isempty(err));
+                            assert(~isempty(err), ...
+                                   test_case.routine_succ_error_message(rA, ...
+                                                                        k, ...
+                                                                        Obj));
                         catch e
-                            varargout{1}{k} = e;
+                            if nargout > 1
+                                varargout{1}{k} = error_stru(e);
+                                varargout{1}{k}.stack(:) = [];
+                            endif
                         end_try_catch
                     endif
 
@@ -260,46 +287,76 @@ classdef (Abstract) test_case
                 else
                     # Test routine is not expected to fail.
 
-                    err = [];
+                    failErr = [];
+                    convErr = [];
+                    ou      = false;
 
                     try
-
                         # Run test routine and store the outcome.
                         ou = rA{k}();
+                    catch failErr
+                        # Do nothing with failErr here. Non-emptiness of
+                        # failErr is tested later.
+                        1;
+                    end_try_catch
 
-                        # Convert test routine outcome to logical.
-                        ou = logical(ou);
+                    if isempty(failErr)
+                        try
 
-                        # Make sure to have a scalar test routine outcome.
-                        if ou
-                            ou = true;
-                        else
+                            # Convert test routine outcome to logical.
+                            ou = logical(ou);
+
+                            # Make sure to have a scalar test routine outcome.
+                            if ou
+                                ou = true;
+                            else
+                                ou = false;
+                            endif
+
+                        catch convErr
                             ou = false;
-                        endif
+                            # Do nothing with convErr here. Non-emptiness of
+                            # convErr is tested later.
+                            1;
+                        end_try_catch
+                    endif
 
-                    catch err
-                        ou = false;
+                    try
+                        assert(isempty(convErr), ...
+                               test_case.routine_type_error_message(rA, ...
+                                                                    k, ...
+                                                                    Obj));
+                    catch e
                         if nargout > 1
-                            mFNF = mfilename('fullpathext');
-                            err.stack = call_stack_head(err.stack, ...
-                                                        mFNF);
-                            varargout{1}{k} = err;
+                            varargout{1}{k}          = error_stru(e);
+                            varargout{1}{k}.stack(:) = [];
                         endif
                     end_try_catch
 
-                    if isempty(err) && ~ou
-                        msg = test_case.routine_outcome_error_message(rA, ...
-                                                                      k, ...
-                                                                      Obj);
-                        try
-                            error(msg);
-                        catch e
-                            if nargout > 1
-                                e.stack(:) = [];
-                                varargout{1}{k} = e;
-                            endif
-                        end_try_catch
+                    if ~isempty(failErr)
+                        if nargout > 1
+                            mFNF            = mfilename('fullpathext');
+                            eS              = error_stru(failErr);
+                            eS.stack        = call_stack_head(eS.stack, mFNF);
+                            varargout{1}{k} = eS;
+                        endif
                     endif
+
+                    try
+                        assert(~isempty(convErr) ...
+                                 || ...
+                               ~isempty(failErr) ...
+                                 || ...
+                               ou, ...
+                               test_case.routine_outcome_error_message(rA, ...
+                                                                       k, ...
+                                                                       Obj));
+                    catch e
+                        if nargout > 1
+                            varargout{1}{k}          = error_stru(e);
+                            varargout{1}{k}.stack(:) = [];
+                        endif
+                    end_try_catch
 
                     Outc = Outc && ou;
 
