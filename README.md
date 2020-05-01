@@ -12,10 +12,10 @@ of Octave, which I didn't use at all in
 
 ## Author
 
-[Thierry Rascle](thierr26@free.fr)
+[Thierry Rascle](mailto:thierr26@free.fr)
 
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for
-details.
+This project is licensed under the MIT License. For more information, please
+refer to the [LICENSE](LICENSE) file.
